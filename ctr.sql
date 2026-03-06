@@ -4,6 +4,7 @@
 --   events (app_id INTEGER, event_type VARCHAR, timestamp DATETIME)
 --
 -- CTR = (clicks / impressions) * 100
+-- Only apps that have at least one impression are included.
 
 SELECT
     app_id,
