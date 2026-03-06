@@ -1,26 +1,28 @@
 """Convert an integer to its base-13 string representation."""
 
+import sys
+
 DIGITS = "0123456789ABC"
 
 
-def _collect_digits(n: int) -> list[str]:
-    """Recursively collect base-13 digits for a non-negative integer.
+def _digit_stream(n: int):
+    """Generate base-13 digits for a positive integer, least significant first.
 
     Args:
-        n: A non-negative integer.
+        n: A positive integer.
 
-    Returns:
-        A list of base-13 digit characters, most significant first.
+    Yields:
+        Single base-13 digit characters from least to most significant.
     """
-    if n == 0:
-        return []
-    return _collect_digits(n // 13) + [DIGITS[n % 13]]
+    while n:
+        yield DIGITS[n % 13]
+        n //= 13
 
 
 def to_base13(num: int) -> str:
     """Return the base-13 string representation of an integer.
 
-    Uses digits 0-9 for values 0-9 and A, B, C for 10, 11, 12.
+    Digits 0-9 represent values 0-9; A, B, C represent 10, 11, 12.
 
     Args:
         num: The integer to convert.
@@ -38,13 +40,47 @@ def to_base13(num: int) -> str:
     """
     if num == 0:
         return "0"
-
     sign = "-" if num < 0 else ""
-    digits = _collect_digits(abs(num))
-    return sign + "".join(digits)
+    return sign + "".join(reversed(list(_digit_stream(abs(num)))))
+
+
+def run_tests() -> None:
+    """Run test cases and report results."""
+    # (input, expected_output)
+    cases = [
+        (0,        "0"),      # zero
+        (1,        "1"),      # one
+        (9,        "9"),      # last decimal-only digit
+        (10,       "A"),      # first alpha digit
+        (11,       "B"),
+        (12,       "C"),      # last single digit
+        (13,       "10"),     # base rollover
+        (14,       "11"),
+        (26,       "20"),
+        (169,      "100"),    # 13^2
+        (2026,     "BCB"),    # current year
+        (1000000,  "290221"),
+        (-1,       "-1"),     # negative
+        (-13,      "-10"),
+        (-170,     "-101"),
+        (-2026,    "-BCB"),
+    ]
+
+    passed = failed = 0
+    for num, expected in cases:
+        result = to_base13(num)
+        status = "PASS" if result == expected else "FAIL"
+        if status == "FAIL":
+            failed += 1
+            print(f"  {status}  to_base13({num:>8}) = {result!r:>8}  (expected {expected!r})")
+        else:
+            passed += 1
+            print(f"  {status}  to_base13({num:>8}) = {result!r}")
+
+    print(f"\n{passed} passed, {failed} failed.")
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    test_cases = [0, 1, 12, 13, 14, 28, 169, -1, -13, -170]
-    for n in test_cases:
-        print(f"to_base13({n:>6}) = {to_base13(n)}")
+    run_tests()
