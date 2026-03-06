@@ -5,24 +5,12 @@ import sys
 DIGITS = "0123456789ABC"
 
 
-def _digit_stream(n: int):
-    """Generate base-13 digits for a positive integer, least significant first.
-
-    Args:
-        n: A positive integer.
-
-    Yields:
-        Single base-13 digit characters from least to most significant.
-    """
-    while n:
-        yield DIGITS[n % 13]
-        n //= 13
-
-
 def to_base13(num: int) -> str:
     """Return the base-13 string representation of an integer.
 
     Digits 0-9 represent values 0-9; A, B, C represent 10, 11, 12.
+    Uses recursion: the most significant digits are resolved first by
+    recursing on num // 13, then the current digit is appended.
 
     Args:
         num: The integer to convert.
@@ -40,8 +28,11 @@ def to_base13(num: int) -> str:
     """
     if num == 0:
         return "0"
-    sign = "-" if num < 0 else ""
-    return sign + "".join(reversed(list(_digit_stream(abs(num)))))
+    if num < 0:
+        return "-" + to_base13(-num)
+    if num < 13:
+        return DIGITS[num]
+    return to_base13(num // 13) + DIGITS[num % 13]
 
 
 def run_tests() -> None:
