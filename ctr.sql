@@ -4,7 +4,6 @@
 --   events (app_id INTEGER, event_type VARCHAR, timestamp DATETIME)
 --
 -- CTR = (clicks / impressions) * 100
--- Only apps that have at least one impression are included.
 
 SELECT
     app_id,
@@ -15,5 +14,5 @@ SELECT
         2
     ) AS ctr
 FROM events
-WHERE YEAR(timestamp) = 2022
+WHERE strftime('%Y', timestamp) = '2022'
 GROUP BY app_id;
