@@ -1,7 +1,7 @@
 -- Click-Through Rate (CTR) per app for the year 2022
 --
 -- Schema:
---   events (app_id INTEGER, event_type VARCHAR, timestamp DATETIME)
+--   events (app_id INTEGER, event_type VARCHAR, timestamp TIMESTAMP)
 --
 -- CTR = (clicks / impressions) * 100
 -- Only apps that have at least one impression are included.
@@ -15,5 +15,5 @@ SELECT
         2
     ) AS ctr
 FROM events
-WHERE strftime('%Y', timestamp) = '2022'
+WHERE EXTRACT(YEAR FROM timestamp) = 2022
 GROUP BY app_id;
