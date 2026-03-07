@@ -1,4 +1,4 @@
-"""Convert an integer to its base-13 string representation."""
+"""Practice problems: base-13 conversion and duplicate detection."""
 
 import sys
 
@@ -73,5 +73,56 @@ def run_tests() -> None:
         sys.exit(1)
 
 
+def has_duplicate(input: list[int]) -> bool:
+    """Return True if any value appears at least twice, False if all are distinct.
+
+    Args:
+        input: A list of integers.
+
+    Returns:
+        True if any duplicate exists, False otherwise.
+
+    Examples:
+        >>> has_duplicate([1, 2, 3, 1])
+        True
+        >>> has_duplicate([1, 2, 3, 4])
+        False
+    """
+    return len(input) != len(set(input))
+
+
+def run_duplicate_tests() -> None:
+    """Run test cases for has_duplicate."""
+    cases = [
+        ([1, 2, 3, 1],      True),   # duplicate at start and end
+        ([1, 2, 3, 4],      False),  # all distinct
+        ([],                False),  # empty list
+        ([1],               False),  # single element
+        ([1, 1],            True),   # two identical elements
+        ([1, 2, 3, 4, 2],  True),   # duplicate in middle
+        ([-1, -2, -1],      True),   # negative duplicates
+        ([0, 0],            True),   # zero duplicate
+        ([1, 2, 3],         False),  # no duplicates
+    ]
+
+    passed = failed = 0
+    for nums, expected in cases:
+        result = has_duplicate(nums)
+        status = "PASS" if result == expected else "FAIL"
+        if status == "FAIL":
+            failed += 1
+            print(f"  {status}  has_duplicate({nums}) = {result}  (expected {expected})")
+        else:
+            passed += 1
+            print(f"  {status}  has_duplicate({nums}) = {result}")
+
+    print(f"\n{passed} passed, {failed} failed.")
+    if failed:
+        sys.exit(1)
+
+
 if __name__ == "__main__":
+    print("=== Base-13 Tests ===")
     run_tests()
+    print("\n=== Duplicate Detection Tests ===")
+    run_duplicate_tests()
