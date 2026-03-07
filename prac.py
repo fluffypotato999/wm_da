@@ -1,7 +1,6 @@
 """Practice problems: base-13 conversion, duplicate detection, sliding window."""
 
 import sys
-from collections import defaultdict
 
 DIGITS = "0123456789ABC"
 
@@ -148,18 +147,19 @@ def SearchingChallenge(strParam):
     if k == 0 or not text:
         return ""
 
-    char_count = defaultdict(int)
+    char_count = {}
     left = 0
     best_start = 0
     best_len = 0
 
     for right, char in enumerate(text):
-        char_count[char] += 1
+        char_count[char] = char_count.get(char, 0) + 1
 
         while len(char_count) > k:
-            char_count[text[left]] -= 1
-            if char_count[text[left]] == 0:
-                del char_count[text[left]]
+            left_char = text[left]
+            char_count[left_char] -= 1
+            if char_count[left_char] == 0:
+                del char_count[left_char]
             left += 1
 
         if len(char_count) == k and (right - left + 1) > best_len:
