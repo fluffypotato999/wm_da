@@ -122,15 +122,15 @@ def run_duplicate_tests() -> None:
         sys.exit(1)
 
 
-def SearchingChallenge(s: str) -> str:
+def SearchingChallenge(strParam):
     """Find the longest substring with exactly k unique characters.
 
-    The first character of s is the integer k. The search begins from
-    the second character onward. Uses a sliding window approach.
+    The first character of strParam is the integer k. The search begins
+    from the second character onward. Uses a sliding window approach.
 
     Args:
-        s: A string whose first character is k (number of unique chars)
-            and the remainder is the text to search.
+        strParam: A string whose first character is k (number of unique
+            chars) and the remainder is the text to search.
 
     Returns:
         The longest substring containing exactly k unique characters.
@@ -142,8 +142,8 @@ def SearchingChallenge(s: str) -> str:
         >>> SearchingChallenge("3aabacbebebe")
         'cbebebe'
     """
-    k = int(s[0])
-    text = s[1:]
+    k = int(strParam[0])
+    text = strParam[1:]
 
     if k == 0 or not text:
         return ""
