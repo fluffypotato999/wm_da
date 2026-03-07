@@ -122,7 +122,7 @@ def run_duplicate_tests() -> None:
         sys.exit(1)
 
 
-def searching_challenge(s: str) -> str:
+def SearchingChallenge(s: str) -> str:
     """Find the longest substring with exactly k unique characters.
 
     The first character of s is the integer k. The search begins from
@@ -137,9 +137,9 @@ def searching_challenge(s: str) -> str:
         Returns an empty string if no such substring exists.
 
     Examples:
-        >>> searching_challenge("2aabbacbaa")
+        >>> SearchingChallenge("2aabbacbaa")
         'aabba'
-        >>> searching_challenge("3aabacbebebe")
+        >>> SearchingChallenge("3aabacbebebe")
         'cbebebe'
     """
     k = int(s[0])
@@ -182,14 +182,14 @@ def run_searching_tests() -> None:
 
     passed = failed = 0
     for s, expected in cases:
-        result = searching_challenge(s)
+        result = SearchingChallenge(s)
         status = "PASS" if result == expected else "FAIL"
         if status == "FAIL":
             failed += 1
-            print(f"  {status}  searching_challenge({s!r}) = {result!r}  (expected {expected!r})")
+            print(f"  {status}  SearchingChallenge({s!r}) = {result!r}  (expected {expected!r})")
         else:
             passed += 1
-            print(f"  {status}  searching_challenge({s!r}) = {result!r}")
+            print(f"  {status}  SearchingChallenge({s!r}) = {result!r}")
 
     print(f"\n{passed} passed, {failed} failed.")
     if failed:
